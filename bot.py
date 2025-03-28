@@ -22,7 +22,8 @@ load_dotenv()
 class BotConfig:
     """Kelas konfigurasi bot"""
     BOT_TOKEN = os.getenv("BOT_TOKEN")
-    INACTIVE_RESPONSE = "😴 Bot lagi mode istirahat nih~ Sabar ya, nanti balik lagi!"
+    INACTIVE_RESPONSE1 = "😴 Bot lagi mode istirahat nih~ Sabar ya, nanti balik lagi!"
+    INACTIVE_RESPONSE2 = "Kalo ada keperluan chat atmin aja: @diopbr"
 
 # Inisialisasi Bot dengan konfigurasi yang kompatibel dengan aiogram 3.7.0+
 bot = Bot(
@@ -36,13 +37,15 @@ dp = Dispatcher(storage=storage)
 async def handle_all_messages(message: Message):
     """Handler pesan universal dengan logging minimal"""
     logger.info(f"Pesan dari {message.from_user.username or 'Pengguna'}: {message.text}")
-    await message.reply(BotConfig.INACTIVE_RESPONSE)
+    await message.reply(BotConfig.INACTIVE_RESPONSE1)
+    await message.reply(BotConfig.INACTIVE_RESPONSE2)
 
 @dp.callback_query()
 async def handle_all_callback_queries(callback: CallbackQuery):
     """Handler callback query universal dengan logging"""
     logger.info(f"Callback dari {callback.from_user.username or 'Pengguna'}")
-    await callback.answer(BotConfig.INACTIVE_RESPONSE, show_alert=True)
+    await callback.answer(BotConfig.INACTIVE_RESPONSE1, show_alert=True)
+    await callback.answer(BotConfig.INACTIVE_RESPONSE2, show_alert=True)
 
 async def main():
     """Fungsi utama untuk menjalankan bot dengan error handling yang lebih baik"""
